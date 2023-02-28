@@ -1,7 +1,5 @@
 import { Logger } from "@nestjs/common";
 import { delay, Observable, retryWhen, scan } from "rxjs";
-import { PGBossModuleOptions } from "../interfaces";
-import { DEFAULT_INSTANCE_NAME } from "../pg-boss.constants";
 
 const logger = new Logger("PGBossModule");
 

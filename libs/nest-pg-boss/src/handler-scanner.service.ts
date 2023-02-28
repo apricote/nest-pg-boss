@@ -39,35 +39,24 @@ export class HandlerScannerService {
 
     return providerInstances.flatMap(({ instance }) => {
       const instancePrototype = Object.getPrototypeOf(instance || {});
-      return this.metadataScanner.scanFromPrototype(
-        instance,
-        instancePrototype,
-        (method) => {
+      return this.metadataScanner
+        .getAllMethodNames(instancePrototype)
+        .map((methodName) => {
           const metadata = HandlerScannerService.exploreMethodMetadata(
             instancePrototype,
-            method,
+            methodName,
           );
 
           if (metadata != null) {
-            this.logger.warn(
-              {
-                metadata,
-                instance,
-                method,
-                hasMethod: instance[method],
-              },
-              "scanFromPrototype",
-            );
-
             return {
               metadata,
-              callback: (instance as any)[method].bind(instance),
+              callback: (instance as any)[methodName].bind(instance),
             };
           }
 
           return null;
-        },
-      );
+        })
+        .filter(Boolean);
     });
   }
 }

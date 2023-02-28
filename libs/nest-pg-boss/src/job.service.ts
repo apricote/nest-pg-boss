@@ -6,33 +6,23 @@ import {
   Scope,
   SetMetadata,
 } from "@nestjs/common";
-import { LazyModuleLoader } from "@nestjs/core";
 import * as PGBoss from "pg-boss";
 import { getJobToken } from "./common/pg-boss.utils";
 import { HandlerMetadata } from "./interfaces/handler-metadata.interface";
-import { PGBossCoreModule } from "./pg-boss-core.module";
 import { PG_BOSS_JOB_METADATA } from "./pg-boss.constants";
 import { PGBossService } from "./pg-boss.service";
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class JobService<JobData extends object> {
-  private pgBossService: PGBossService;
   constructor(
     private readonly name: string,
-    private lazyModuleLoader: LazyModuleLoader,
+    private readonly pgBossService: PGBossService,
   ) {}
 
   async send(
     data: JobData,
     options: PGBoss.SendOptions,
   ): Promise<string | null> {
-    if (!this.pgBossService) {
-      const moduleRef = await this.lazyModuleLoader.load(
-        () => PGBossCoreModule,
-      );
-      this.pgBossService = moduleRef.get(PGBossService);
-    }
-
     return this.pgBossService.instance.send(this.name, data, options);
   }
 
@@ -71,13 +61,6 @@ export class JobService<JobData extends object> {
     seconds: number,
     key?: string,
   ): Promise<string | null> {
-    if (!this.pgBossService) {
-      const moduleRef = await this.lazyModuleLoader.load(
-        () => PGBossCoreModule,
-      );
-      this.pgBossService = moduleRef.get(PGBossService);
-    }
-
     return this.pgBossService.instance.sendThrottled(
       this.name,
       data,
@@ -93,13 +76,6 @@ export class JobService<JobData extends object> {
     seconds: number,
     key?: string,
   ): Promise<string | null> {
-    if (!this.pgBossService) {
-      const moduleRef = await this.lazyModuleLoader.load(
-        () => PGBossCoreModule,
-      );
-      this.pgBossService = moduleRef.get(PGBossService);
-    }
-
     return this.pgBossService.instance.sendDebounced(
       this.name,
       data,
@@ -126,9 +102,9 @@ export const createJob = <JobData extends object>(
   return {
     ServiceProvider: {
       provide: token,
-      useFactory: (loader: LazyModuleLoader) =>
-        new JobService<JobData>(name, loader),
-      inject: [LazyModuleLoader],
+      useFactory: (pgBossService: PGBossService) =>
+        new JobService<JobData>(name, pgBossService),
+      inject: [PGBossService],
     },
     Service: JobService<JobData>,
     Inject: () => Inject(token),

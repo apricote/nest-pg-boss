@@ -1,11 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/nest-pg-boss/src",
+  "sourceRoot": "apps/example/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
-    "tsConfigPath": "apps/nest-pg-boss/tsconfig.app.json"
+    "webpack": false,
+    "tsConfigPath": "apps/example/tsconfig.app.json"
   },
   "monorepo": true,
   "root": "apps/nest-pg-boss",

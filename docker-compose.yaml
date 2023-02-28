@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: pg-boss
+      POSTGRES_USER: pg-boss
+      POSTGRES_DB: pg-boss
+
+    networks:
+      - app
+
+  example-app:
+    build: .
+    command: ["npm", "run", "start:dev"]
+    environment:
+      DB_HOST: postgres
+      DB_USERNAME: pg-boss
+      DB_PASSWORD: pg-boss
+      DB_DATABASE: pg-boss
+
+    volumes:
+      - ./node_modules:/app/node_modules
+      - ./apps:/app/apps
+      - ./libs:/app/libs
+
+    ports:
+      - 3000:3000
+
+    networks:
+      - app
+
+networks:
+  app: {}

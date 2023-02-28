@@ -1,36 +1,155 @@
-import { DynamicModule, Global, Module } from "@nestjs/common";
+import {
+  DynamicModule,
+  Global,
+  Inject,
+  Logger,
+  Module,
+  OnApplicationBootstrap,
+  OnModuleDestroy,
+  OnModuleInit,
+} from "@nestjs/common";
+import { MetadataScanner, ModuleRef } from "@nestjs/core";
+import * as PGBoss from "pg-boss";
+import { defer, lastValueFrom } from "rxjs";
+import { handleRetry } from "./common/pg-boss.utils";
+import { PGBossJobModule } from "./pg-boss-job.module";
+import { HandlerScannerService } from "./handler-scanner.service";
+import { PGBossModuleOptions } from "./interfaces/pg-boss-options.interface";
 import { Job } from "./job.service";
-import { PGBossCoreModule } from "./pg-boss-core.module";
 import {
   ASYNC_OPTIONS_TYPE,
   ConfigurableModuleClass,
+  MODULE_OPTIONS_TOKEN,
   OPTIONS_TYPE,
 } from "./pg-boss.module-definition";
+import { PGBossService } from "./pg-boss.service";
 
 @Global()
-@Module({})
-export class PGBossModule extends ConfigurableModuleClass {
-  static register(options: typeof OPTIONS_TYPE): DynamicModule {
-    return {
-      imports: [PGBossCoreModule.register(options)],
-      global: true,
-      ...super.register(options),
-    };
+@Module({
+  providers: [MetadataScanner, HandlerScannerService],
+})
+export class PGBossModule
+  extends ConfigurableModuleClass
+  implements OnModuleInit, OnApplicationBootstrap, OnModuleDestroy
+{
+  private readonly logger = new Logger(this.constructor.name);
+  private instance: PGBoss;
+
+  constructor(
+    @Inject(MODULE_OPTIONS_TOKEN)
+    private readonly options: PGBossModuleOptions,
+    private readonly moduleRef: ModuleRef,
+    private readonly handlerScannerService: HandlerScannerService,
+  ) {
+    super();
   }
 
-  static registerAsync(options: ASYNC_OPTIONS_TYPE): DynamicModule {
-    return {
-      imports: [PGBossCoreModule.registerAsync(options)],
-      global: true,
-      ...super.registerAsync(options),
+  static forRoot(options: typeof OPTIONS_TYPE): DynamicModule {
+    const instanceProvider = {
+      provide: PGBoss,
+      useFactory: async () => await this.createInstanceFactory(options),
     };
+    const serviceProvider = {
+      provide: PGBossService,
+      useFactory: (pgBoss: PGBoss) => this.createServiceFactory(pgBoss),
+      inject: [PGBoss],
+    };
+
+    const dynamicModule = super.forRoot(options);
+    console.dir(dynamicModule);
+    dynamicModule.providers.push(instanceProvider, serviceProvider);
+    dynamicModule.exports ||= [];
+    dynamicModule.exports.push(serviceProvider);
+
+    return dynamicModule;
+  }
+
+  static forRootAsync(options: ASYNC_OPTIONS_TYPE): DynamicModule {
+    const instanceProvider = {
+      provide: PGBoss,
+      useFactory: async (pgBossModuleOptions: PGBossModuleOptions) => {
+        if (options.application_name) {
+          return await this.createInstanceFactory({
+            ...pgBossModuleOptions,
+            application_name: options.application_name,
+          });
+        }
+        return await this.createInstanceFactory(pgBossModuleOptions);
+      },
+      inject: [MODULE_OPTIONS_TOKEN],
+    };
+    const serviceProvider = {
+      provide: PGBossService,
+      useFactory: (instance: PGBoss) => this.createServiceFactory(instance),
+      inject: [PGBoss],
+    };
+
+    const dynamicModule = super.forRootAsync(options);
+    dynamicModule.providers.push(instanceProvider, serviceProvider);
+    if (!dynamicModule.exports) {
+      dynamicModule.exports = [];
+    }
+    dynamicModule.exports.push(serviceProvider);
+
+    return dynamicModule;
+  }
+
+  private static async createInstanceFactory(options: PGBossModuleOptions) {
+    return await lastValueFrom(
+      defer(async () => new PGBoss(options).start()).pipe(
+        handleRetry(
+          options.retryAttempts,
+          options.retryDelay,
+          options.verboseRetryLog,
+          options.toRetry,
+        ),
+      ),
+    );
+  }
+
+  private static createServiceFactory(instance: PGBoss) {
+    return new PGBossService(instance);
   }
 
   static forJobs(jobs: Job[]) {
     return {
-      module: PGBossModule,
+      module: PGBossJobModule,
       providers: jobs.map((job) => job.ServiceProvider),
       exports: jobs.map((job) => job.ServiceProvider.provide),
     };
+  }
+
+  onModuleInit() {
+    this.instance = this.moduleRef.get<PGBoss>(PGBoss);
+  }
+
+  onApplicationBootstrap() {
+    this.setupWorkers();
+  }
+
+  async onModuleDestroy(): Promise<void> {
+    try {
+      if (this.instance) {
+        await this.instance.stop();
+      }
+    } catch (e) {
+      this.logger.error(e?.message);
+    }
+  }
+
+  private setupWorkers() {
+    if (!this.instance) {
+      throw new Error(
+        "setupWorkers must be called after onApplicationBootstrap",
+      );
+    }
+
+    const jobHandlers = this.handlerScannerService.getJobHandlers();
+
+    jobHandlers.forEach((handler) => {
+      this.instance.work(handler.metadata.jobName, handler.callback);
+    });
+
+    this.logger.warn(jobHandlers, "jobHandlers");
   }
 }
