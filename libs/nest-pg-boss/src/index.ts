@@ -1,2 +1,3 @@
-export * from "./nest-pg-boss.module";
-export * from "./nest-pg-boss.service";
+export * from "./interfaces";
+export * from "./pg-boss.module";
+export * from "./job.service";
