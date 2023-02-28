@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/nest-pg-boss/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/nest-pg-boss/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/nest-pg-boss",
+  "projects": {
+    "example": {
+      "type": "application",
+      "root": "apps/example",
+      "entryFile": "main",
+      "sourceRoot": "apps/example/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/example/tsconfig.app.json"
+      }
+    },
+    "nest-pg-boss": {
+      "type": "library",
+      "root": "libs/nest-pg-boss",
+      "entryFile": "index",
+      "sourceRoot": "libs/nest-pg-boss/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/nest-pg-boss/tsconfig.lib.json"
+      }
+    }
+  }
+}
