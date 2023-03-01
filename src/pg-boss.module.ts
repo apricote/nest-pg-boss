@@ -22,7 +22,6 @@ import {
   MODULE_OPTIONS_TOKEN,
   OPTIONS_TYPE,
 } from "./pg-boss.module-definition";
-import { PGBossService } from "./pg-boss.service";
 
 @Global()
 @Module({
@@ -49,17 +48,12 @@ export class PGBossModule
       provide: PGBoss,
       useFactory: async () => await this.createInstanceFactory(options),
     };
-    const serviceProvider = {
-      provide: PGBossService,
-      useFactory: (pgBoss: PGBoss) => this.createServiceFactory(pgBoss),
-      inject: [PGBoss],
-    };
 
     const dynamicModule = super.forRoot(options);
     console.dir(dynamicModule);
-    dynamicModule.providers.push(instanceProvider, serviceProvider);
+    dynamicModule.providers.push(instanceProvider);
     dynamicModule.exports ||= [];
-    dynamicModule.exports.push(serviceProvider);
+    dynamicModule.exports.push(instanceProvider);
 
     return dynamicModule;
   }
@@ -78,18 +72,13 @@ export class PGBossModule
       },
       inject: [MODULE_OPTIONS_TOKEN],
     };
-    const serviceProvider = {
-      provide: PGBossService,
-      useFactory: (instance: PGBoss) => this.createServiceFactory(instance),
-      inject: [PGBoss],
-    };
 
     const dynamicModule = super.forRootAsync(options);
-    dynamicModule.providers.push(instanceProvider, serviceProvider);
+    dynamicModule.providers.push(instanceProvider);
     if (!dynamicModule.exports) {
       dynamicModule.exports = [];
     }
-    dynamicModule.exports.push(serviceProvider);
+    dynamicModule.exports.push(instanceProvider);
 
     return dynamicModule;
   }
@@ -105,10 +94,6 @@ export class PGBossModule
         ),
       ),
     );
-  }
-
-  private static createServiceFactory(instance: PGBoss) {
-    return new PGBossService(instance);
   }
 
   static forJobs(jobs: Job[]) {
