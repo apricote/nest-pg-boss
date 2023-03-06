@@ -10,5 +10,6 @@ jobs:
     steps:
       - uses: google-github-actions/release-please-action@v3
         with:
+          token: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
           release-type: node
           package-name: "@apricote/nest-pg-boss"
