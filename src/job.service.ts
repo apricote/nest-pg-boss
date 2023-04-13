@@ -111,7 +111,7 @@ interface HandleDecorator<JobData extends object> {
 
 export interface Job<JobData extends object = any> {
   ServiceProvider: FactoryProvider<JobService<JobData>>;
-  Inject: () => (target: object, key: string | symbol, index?: number) => void;
+  Inject: () => ParameterDecorator;
   Handle: HandleDecorator<JobData>;
 }
 
