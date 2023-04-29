@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/apricote/nest-pg-boss/compare/v1.0.0...v1.1.0) (2023-04-29)
+
+
+### Features
+
+* batch job inserts ([d38448e](https://github.com/apricote/nest-pg-boss/commit/d38448eee8f74b6f9783b0774922997cc98e4635))
+
 ## 1.0.0 (2023-03-06)
 
 
