@@ -69,6 +69,14 @@ export class JobService<JobData extends object> {
     return this.pgBoss.sendDebounced(this.name, data, options, seconds);
   }
 
+  async insert(jobs: Omit<PGBoss.JobInsert<JobData>, "name">[]): Promise<any> {
+    const _jobs: PGBoss.JobInsert<JobData>[] = jobs.map((job) => ({
+      ...job,
+      name: this.name,
+    }));
+    return this.pgBoss.insert(_jobs);
+  }
+
   async schedule(cron: string, data: JobData, options: PGBoss.ScheduleOptions) {
     return this.pgBoss.schedule(this.name, cron, data, options);
   }
