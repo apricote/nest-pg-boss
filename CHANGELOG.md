@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/apricote/nest-pg-boss/compare/v1.1.0...v1.2.0) (2023-05-05)
+
+
+### Features
+
+* add work options to .Handle() ([#16](https://github.com/apricote/nest-pg-boss/issues/16)) ([9460b44](https://github.com/apricote/nest-pg-boss/commit/9460b44ce951d46ccacf96e01e3dc6b6e7e2636c))
+
 ## [1.1.0](https://github.com/apricote/nest-pg-boss/compare/v1.0.0...v1.1.0) (2023-04-29)
 
 

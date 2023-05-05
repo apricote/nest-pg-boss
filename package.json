@@ -1,6 +1,6 @@
 {
   "name": "@apricote/nest-pg-boss",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Use pg-boss in your NestJS app",
   "author": "Julian Tölle <julian.toelle97@gmail.com>",
   "license": "MIT",
