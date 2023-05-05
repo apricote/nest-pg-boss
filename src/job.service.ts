@@ -89,7 +89,7 @@ export class JobService<JobData extends object> {
 export interface Job<JobData extends object = any> {
   ServiceProvider: FactoryProvider<JobService<JobData>>;
   Inject: () => (target: object, key: string | symbol, index?: number) => void;
-  Handle: () => CustomDecorator<string>;
+  Handle: (options?: PGBoss.WorkOptions) => CustomDecorator<string>;
 }
 
 export const createJob = <JobData extends object>(
@@ -104,10 +104,11 @@ export const createJob = <JobData extends object>(
       inject: [PGBoss],
     },
     Inject: () => Inject(token),
-    Handle: () =>
+    Handle: (options: PGBoss.WorkOptions = {}) =>
       SetMetadata<string, HandlerMetadata>(PG_BOSS_JOB_METADATA, {
         token,
         jobName: name,
+        workOptions: options,
       }),
   };
 };
