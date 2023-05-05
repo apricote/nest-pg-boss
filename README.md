@@ -104,6 +104,12 @@ class FoobarService {
 }
 ```
 
+You can optionally pass an object with [WorkOptions](https://github.com/timgit/pg-boss/blob/1f541263a906781efaf607f539340c9609db77df/types.d.ts#L119) to `.Handle()`:
+
+```typescript
+@FoobarJob.Handle({ teamSize: 10, teamConcurrency: 2 })
+```
+
 ## Test
 
 ```bash

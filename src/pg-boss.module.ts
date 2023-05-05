@@ -139,6 +139,7 @@ export class PGBossModule
       jobHandlers.map(async (handler) => {
         const workerID = await this.instance.work(
           handler.metadata.jobName,
+          handler.metadata.workOptions,
           handler.callback,
         );
         this.logger.log(
