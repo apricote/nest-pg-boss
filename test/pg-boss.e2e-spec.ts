@@ -1,11 +1,11 @@
-import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication, Injectable } from "@nestjs/common";
+import { Test, TestingModule } from "@nestjs/testing";
+import { Job } from "pg-boss";
 import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
 } from "testcontainers";
-import { createJob, JobService, PGBossModule } from "../src";
-import { Job } from "pg-boss";
+import { JobService, PGBossModule, createJob } from "../src";
 
 interface FoobarJobData {
   foo: string;
