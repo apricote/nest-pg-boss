@@ -30,7 +30,7 @@ export class HandlerScannerService {
 
   getJobHandlers(): {
     metadata: HandlerMetadata;
-    callback: WorkHandler<unknown, unknown>;
+    callback: WorkHandler<unknown>;
   }[] {
     // See https://github.com/owl1n/nest-queue/blob/master/src/queue.provider.ts
     const modules = [...this.modulesContainer.values()];
@@ -57,10 +57,7 @@ export class HandlerScannerService {
             }
 
             const callback = (
-              instance as Record<
-                typeof methodName,
-                WorkHandler<unknown, unknown>
-              >
+              instance as Record<typeof methodName, WorkHandler<unknown>>
             )[methodName].bind(instance);
 
             return {
