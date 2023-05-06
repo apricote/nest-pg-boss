@@ -1,14 +1,13 @@
 import {
-  CustomDecorator,
   FactoryProvider,
   Inject,
   Injectable,
   SetMetadata,
 } from "@nestjs/common";
 import * as PGBoss from "pg-boss";
-import { getJobToken } from "./utils";
 import { HandlerMetadata } from "./interfaces/handler-metadata.interface";
 import { PG_BOSS_JOB_METADATA } from "./pg-boss.constants";
+import { getJobToken } from "./utils";
 
 @Injectable()
 export class JobService<JobData extends object> {
@@ -86,10 +85,34 @@ export class JobService<JobData extends object> {
   }
 }
 
+export interface WorkHandler<ReqData> {
+  (job?: PGBoss.Job<ReqData>): Promise<void>;
+}
+
+export interface WorkHandlerBatch<ReqData> {
+  (jobs?: PGBoss.Job<ReqData>[]): Promise<void>;
+}
+
+interface MethodDecorator<PropertyType> {
+  <Class>(
+    target: Class,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<PropertyType>,
+  ): TypedPropertyDescriptor<PropertyType>;
+}
+
+interface HandleDecorator<JobData extends object> {
+  <Options extends PGBoss.WorkOptions>(options?: Options): MethodDecorator<
+    Options extends { batchSize: number }
+      ? WorkHandlerBatch<JobData>
+      : WorkHandler<JobData>
+  >;
+}
+
 export interface Job<JobData extends object = any> {
   ServiceProvider: FactoryProvider<JobService<JobData>>;
   Inject: () => (target: object, key: string | symbol, index?: number) => void;
-  Handle: (options?: PGBoss.WorkOptions) => CustomDecorator<string>;
+  Handle: HandleDecorator<JobData>;
 }
 
 export const createJob = <JobData extends object>(
