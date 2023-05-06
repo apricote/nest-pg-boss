@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/apricote/nest-pg-boss/compare/v1.2.0...v2.0.0) (2023-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* stricter decorator typing ([#18](https://github.com/apricote/nest-pg-boss/issues/18))
+
+### Features
+
+* stricter decorator typing ([#18](https://github.com/apricote/nest-pg-boss/issues/18)) ([d4d024a](https://github.com/apricote/nest-pg-boss/commit/d4d024af073c43288e082e8714c932cf1cd551fd))
+
 ## [1.2.0](https://github.com/apricote/nest-pg-boss/compare/v1.1.0...v1.2.0) (2023-05-05)
 
 
