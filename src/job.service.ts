@@ -11,7 +11,10 @@ import { getJobToken } from "./utils";
 
 @Injectable()
 export class JobService<JobData extends object> {
-  constructor(private readonly name: string, private readonly pgBoss: PGBoss) {}
+  constructor(
+    private readonly name: string,
+    private readonly pgBoss: PGBoss,
+  ) {}
 
   async send(
     data: JobData,
@@ -102,7 +105,9 @@ interface MethodDecorator<PropertyType> {
 }
 
 interface HandleDecorator<JobData extends object> {
-  <Options extends PGBoss.WorkOptions>(options?: Options): MethodDecorator<
+  <Options extends PGBoss.WorkOptions>(
+    options?: Options,
+  ): MethodDecorator<
     Options extends { batchSize: number }
       ? WorkHandlerBatch<JobData>
       : WorkHandler<JobData>
