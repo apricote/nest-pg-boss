@@ -4,7 +4,7 @@ import { Job } from "pg-boss";
 import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
-} from "testcontainers";
+} from "@testcontainers/postgresql";
 import { JobService, PGBossModule, createJob } from "../src";
 
 interface FoobarJobData {
