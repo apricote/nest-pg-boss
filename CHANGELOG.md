@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/apricote/nest-pg-boss/compare/v2.0.0...v2.1.0) (2023-09-16)
+
+
+### Features
+
+* support Nest.js 10 ([#27](https://github.com/apricote/nest-pg-boss/issues/27)) ([7ac149c](https://github.com/apricote/nest-pg-boss/commit/7ac149cda0d56f8d703606aa9f6f6ab2df483ebc))
+
 ## [2.0.0](https://github.com/apricote/nest-pg-boss/compare/v1.2.0...v2.0.0) (2023-05-06)
 
 
