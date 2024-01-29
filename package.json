@@ -1,10 +1,13 @@
 {
-  "name": "@apricote/nest-pg-boss",
-  "version": "2.1.0",
+  "name": "@loctax/nest-pg-boss",
+  "version": "3.0.0",
   "description": "Use pg-boss in your NestJS app",
   "author": "Julian Tölle <julian.toelle97@gmail.com>",
   "license": "MIT",
-  "repository": "github:apricote/nest-pg-boss",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loc-tax/nest-pg-boss.git"
+  },
   "bugs": {
     "url": "https://github.com/apricote/nest-pg-boss/issues"
   },
