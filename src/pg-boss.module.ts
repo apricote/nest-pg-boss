@@ -149,4 +149,8 @@ export class PGBossModule
       })
     );
   }
+
+  public getBossInstance() {
+    return this.instance;
+  }
 }
