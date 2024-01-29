@@ -31,11 +31,11 @@ export class PGBossModule
   implements OnModuleInit, OnApplicationBootstrap, OnModuleDestroy
 {
   private readonly logger = new Logger(this.constructor.name);
-  private instance: PGBoss;
+  private instance: PGBoss | undefined;
 
   constructor(
     private readonly moduleRef: ModuleRef,
-    private readonly handlerScannerService: HandlerScannerService,
+    private readonly handlerScannerService: HandlerScannerService
   ) {
     super();
   }
@@ -61,12 +61,6 @@ export class PGBossModule
     const instanceProvider = {
       provide: PGBoss,
       useFactory: async (pgBossModuleOptions: PGBossModuleOptions) => {
-        if (options.application_name) {
-          return await this.createInstanceFactory({
-            ...pgBossModuleOptions,
-            application_name: options.application_name,
-          });
-        }
         return await this.createInstanceFactory(pgBossModuleOptions);
       },
       inject: [MODULE_OPTIONS_TOKEN],
@@ -92,9 +86,9 @@ export class PGBossModule
           options.retryAttempts,
           options.retryDelay,
           options.verboseRetryLog,
-          options.toRetry,
-        ),
-      ),
+          options.toRetry
+        )
+      )
     );
 
     return pgBoss;
@@ -122,14 +116,14 @@ export class PGBossModule
         await this.instance.stop();
       }
     } catch (e) {
-      this.logger.error(e?.message);
+      this.logger.error((e as Error).message);
     }
   }
 
   private async setupWorkers() {
     if (!this.instance) {
       throw new Error(
-        "setupWorkers must be called after onApplicationBootstrap",
+        "setupWorkers must be called after onApplicationBootstrap"
       );
     }
 
@@ -137,16 +131,22 @@ export class PGBossModule
 
     await Promise.all(
       jobHandlers.map(async (handler) => {
+        if (!this.instance) {
+          throw new Error(
+            "setupWorkers must be called after onApplicationBootstrap"
+          );
+        }
+
         const workerID = await this.instance.work(
           handler.metadata.jobName,
           handler.metadata.workOptions,
-          handler.callback,
+          handler.callback
         );
         this.logger.log(
           { workerID, jobName: handler.metadata.jobName },
-          "Registered Worker",
+          "Registered Worker"
         );
-      }),
+      })
     );
   }
 }
