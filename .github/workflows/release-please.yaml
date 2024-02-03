@@ -6,10 +6,13 @@ name: release-please
 
 jobs:
   release-please:
+    if: github.repository == 'apricote/nest-pg-boss'
+
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: google-github-actions/release-please-action@v4
         with:
           token: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
-          release-type: node
-          package-name: "@apricote/nest-pg-boss"
+          config-file: .github/release-please-config.json
+          manifest-file: .github/release-please-manifest.json
+
