@@ -1,6 +1,6 @@
 {
   "name": "@loctax/nest-pg-boss",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Use pg-boss in your NestJS app",
   "author": "Julian Tölle <julian.toelle97@gmail.com>",
   "license": "MIT",
