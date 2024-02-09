@@ -57,7 +57,7 @@ export class PGBossModule
     return dynamicModule;
   }
 
-  static forRootAsync(options: ASYNC_OPTIONS_TYPE): DynamicModule {
+  static forRootAsync(options: typeof ASYNC_OPTIONS_TYPE): DynamicModule {
     const instanceProvider = {
       provide: PGBoss,
       useFactory: async (pgBossModuleOptions: PGBossModuleOptions) => {
@@ -81,7 +81,14 @@ export class PGBossModule
 
   private static async createInstanceFactory(options: PGBossModuleOptions) {
     const pgBoss = await lastValueFrom(
-      defer(async () => new PGBoss(options).start()).pipe(
+      defer(async () => {
+        const boss = new PGBoss(options);
+
+        boss.on("error", options.onError);
+
+        await boss.start();
+        return boss;
+      }).pipe(
         handleRetry(
           options.retryAttempts,
           options.retryDelay,

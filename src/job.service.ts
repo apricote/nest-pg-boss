@@ -86,10 +86,6 @@ export class JobService<JobData extends object> {
   async unschedule() {
     this.pgBoss.unschedule(this.name);
   }
-
-  getBossInstance() {
-    return this.pgBoss;
-  }
 }
 
 export interface WorkHandler<ReqData> {

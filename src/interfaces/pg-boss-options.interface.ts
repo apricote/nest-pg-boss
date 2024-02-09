@@ -25,4 +25,9 @@ export type PGBossModuleOptions = {
    * If `true`, will show verbose error messages on each connection retry.
    */
   verboseRetryLog?: boolean;
+  /**
+   * This exposes the `on('error', ...` from PGBoss.
+   * @see https://github.com/timgit/pg-boss/blob/master/docs/readme.md#error
+   */
+  onError: (err: Error) => void;
 } & ConstructorOptions;

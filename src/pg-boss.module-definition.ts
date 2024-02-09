@@ -10,11 +10,9 @@ const {
   .setClassMethodName("forRoot")
   .build();
 
-type ASYNC_OPTIONS_TYPE_WITH_NAME = typeof ASYNC_OPTIONS_TYPE;
-
 export {
   ConfigurableModuleClass,
   MODULE_OPTIONS_TOKEN,
   OPTIONS_TYPE,
-  ASYNC_OPTIONS_TYPE_WITH_NAME as ASYNC_OPTIONS_TYPE,
+  ASYNC_OPTIONS_TYPE,
 };

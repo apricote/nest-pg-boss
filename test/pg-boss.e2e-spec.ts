@@ -66,6 +66,9 @@ describe("PGBossModule (e2e)", () => {
           database: postgres.getDatabase(),
           user: postgres.getUsername(),
           password: postgres.getPassword(),
+          onError: (error) => {
+            console.error(error);
+          },
         }),
         PGBossModule.forJobs([FoobarJob]),
       ],
