@@ -13,12 +13,12 @@ import { getJobToken } from "./utils";
 export class JobService<JobData extends object> {
   constructor(
     private readonly name: string,
-    private readonly pgBoss: PGBoss
+    private readonly pgBoss: PGBoss,
   ) {}
 
   async send(
     data: JobData,
-    options: PGBoss.SendOptions
+    options: PGBoss.SendOptions,
   ): Promise<string | null> {
     return this.pgBoss.send(this.name, data, options);
   }
@@ -26,7 +26,7 @@ export class JobService<JobData extends object> {
   async sendAfter(
     data: JobData,
     options: PGBoss.SendOptions,
-    date: Date | string | number
+    date: Date | string | number,
   ): Promise<string | null> {
     // sendAfter has three overloads for all date variants we accept
     return this.pgBoss.sendAfter(this.name, data, options, date as any);
@@ -35,14 +35,14 @@ export class JobService<JobData extends object> {
   async sendOnce(
     data: JobData,
     options: PGBoss.SendOptions,
-    key: string
+    key: string,
   ): Promise<string | null> {
     return this.pgBoss.sendOnce(this.name, data, options, key);
   }
 
   async sendSingleton(
     data: JobData,
-    options: PGBoss.SendOptions
+    options: PGBoss.SendOptions,
   ): Promise<string | null> {
     return this.pgBoss.sendSingleton(this.name, data, options);
   }
@@ -51,7 +51,7 @@ export class JobService<JobData extends object> {
     data: JobData,
     options: PGBoss.SendOptions,
     seconds: number,
-    key?: string
+    key?: string,
   ): Promise<string | null> {
     if (key != undefined) {
       return this.pgBoss.sendThrottled(this.name, data, options, seconds, key);
@@ -63,7 +63,7 @@ export class JobService<JobData extends object> {
     data: JobData,
     options: PGBoss.SendOptions,
     seconds: number,
-    key?: string
+    key?: string,
   ): Promise<string | null> {
     if (key != undefined) {
       return this.pgBoss.sendDebounced(this.name, data, options, seconds, key);
@@ -73,7 +73,7 @@ export class JobService<JobData extends object> {
 
   async insert(
     jobs: Omit<PGBoss.JobInsert<JobData>, "name">[],
-    options: PGBoss.InsertOptions
+    options: PGBoss.InsertOptions,
   ): Promise<any> {
     const _jobs: PGBoss.JobInsert<JobData>[] = jobs.map((job) => ({
       ...job,
@@ -103,13 +103,13 @@ interface MethodDecorator<PropertyType> {
   <Class>(
     target: Class,
     propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<PropertyType>
+    descriptor: TypedPropertyDescriptor<PropertyType>,
   ): TypedPropertyDescriptor<PropertyType>;
 }
 
 interface HandleDecorator<JobData extends object> {
   <Options extends PGBoss.WorkOptions>(
-    options?: Options
+    options?: Options,
   ): MethodDecorator<
     Options extends { batchSize: number }
       ? WorkHandlerBatch<JobData>
@@ -124,7 +124,7 @@ export interface Job<JobData extends object = any> {
 }
 
 export const createJob = <JobData extends object>(
-  name: string
+  name: string,
 ): Job<JobData> => {
   const token = getJobToken(name);
 
