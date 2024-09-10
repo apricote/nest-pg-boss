@@ -30,4 +30,5 @@ export type PGBossModuleOptions = {
    * @see https://github.com/timgit/pg-boss/blob/master/docs/readme.md#error
    */
   onError: (err: Error) => void;
+  disableWorkers?: boolean;
 } & ConstructorOptions;

@@ -1,6 +1,7 @@
 import {
   DynamicModule,
   Global,
+  Inject,
   Logger,
   Module,
   OnApplicationBootstrap,
@@ -36,6 +37,8 @@ export class PGBossModule
   constructor(
     private readonly moduleRef: ModuleRef,
     private readonly handlerScannerService: HandlerScannerService,
+    @Inject(MODULE_OPTIONS_TOKEN)
+    private readonly options: PGBossModuleOptions
   ) {
     super();
   }
@@ -93,9 +96,9 @@ export class PGBossModule
           options.retryAttempts,
           options.retryDelay,
           options.verboseRetryLog,
-          options.toRetry,
-        ),
-      ),
+          options.toRetry
+        )
+      )
     );
 
     return pgBoss;
@@ -128,9 +131,16 @@ export class PGBossModule
   }
 
   private async setupWorkers() {
+    if (this.options.disableWorkers) {
+      this.logger.log(
+        "disableWorkers is set so will not attempt to register them"
+      );
+      return;
+    }
+
     if (!this.instance) {
       throw new Error(
-        "setupWorkers must be called after onApplicationBootstrap",
+        "setupWorkers must be called after onApplicationBootstrap"
       );
     }
 
@@ -140,20 +150,20 @@ export class PGBossModule
       jobHandlers.map(async (handler) => {
         if (!this.instance) {
           throw new Error(
-            "setupWorkers must be called after onApplicationBootstrap",
+            "setupWorkers must be called after onApplicationBootstrap"
           );
         }
 
         const workerID = await this.instance.work(
           handler.metadata.jobName,
           handler.metadata.workOptions,
-          handler.callback,
+          handler.callback
         );
         this.logger.log(
           { workerID, jobName: handler.metadata.jobName },
-          "Registered Worker",
+          "Registered Worker"
         );
-      }),
+      })
     );
   }
 

@@ -21,7 +21,7 @@ const sleep = (ms: number) =>
 class FoobarService {
   constructor(
     @FoobarJob.Inject()
-    private readonly foobarJobService: JobService<FoobarJobData>,
+    private readonly foobarJobService: JobService<FoobarJobData>
   ) {}
 
   public readonly datastore: FoobarJobData[] = [];
@@ -69,6 +69,7 @@ describe("PGBossModule (e2e)", () => {
           onError: (error) => {
             console.error(error);
           },
+          disableWorkers: false,
         }),
         PGBossModule.forJobs([FoobarJob]),
       ],
