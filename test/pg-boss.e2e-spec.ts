@@ -21,7 +21,7 @@ const sleep = (ms: number) =>
 class FoobarService {
   constructor(
     @FoobarJob.Inject()
-    private readonly foobarJobService: JobService<FoobarJobData>,
+    private readonly foobarJobService: JobService<FoobarJobData>
   ) {}
 
   public readonly datastore: FoobarJobData[] = [];
@@ -73,6 +73,7 @@ describe("PGBossModule (e2e)", () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
     await app.init();
     foobarService = app.get<FoobarService>(FoobarService);
   });
@@ -96,7 +97,7 @@ describe("PGBossModule (e2e)", () => {
         lastError = null;
         break;
       } catch (err) {
-        lastError = err;
+        lastError = err as Error;
         await sleep(2_000);
       }
     }
