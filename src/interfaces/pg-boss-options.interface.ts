@@ -25,4 +25,9 @@ export type PGBossModuleOptions = {
    * If `true`, will show verbose error messages on each connection retry.
    */
   verboseRetryLog?: boolean;
+  /**
+   * If set, will add a handler to the 'error' event
+   * @param error error that was thrown
+   */
+  onErrorHandler?: (error: Error) => void;
 } & ConstructorOptions;

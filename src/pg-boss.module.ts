@@ -96,6 +96,9 @@ export class PGBossModule
         ),
       ),
     );
+    if (options.onErrorHandler) {
+      pgBoss.on('error', options.onErrorHandler);
+    }
 
     return pgBoss;
   }
