@@ -30,8 +30,8 @@ import { PGBossModule } from "@apricote/nest-pg-boss";
 @Module({
   imports: [
     PGBossModule.forRootAsync({
-      application_name: "default",
       useFactory: (config: ConfigService) => ({
+        application_name: "default",
         // Connection details
         host: config.get<string>("DB_HOST"),
         user: config.get<string>("DB_USERNAME"),
@@ -53,14 +53,14 @@ For a list of available settings, check out the [pg-boss docs](https://github.co
 
 ```typescript
 // jobs.ts
-import { createJob } from "@apricote/nest-pg-boss"
+import { createJob } from "@apricote/nest-pg-boss";
 
 interface IFoobarJobData {
-  foo: string
-  bar: boolean
+  foo: string;
+  bar: boolean;
 }
 
-const FoobarJob = createJob<IFoobarJobData>("foobar")
+const FoobarJob = createJob<IFoobarJobData>("foobar");
 ```
 
 #### Create new Jobs
@@ -72,10 +72,9 @@ import { FoobarService } from "./service.ts";
 
 @Module({
   imports: PGBossModule.forJobs([FoobarJob]),
-  providers: [FoobarService]
+  providers: [FoobarService],
 })
 class FoobarModule {}
-
 ```
 
 ```typescript
@@ -87,7 +86,7 @@ import { FoobarJob, IFoobarJobData } from "./jobs.ts";
 class FoobarService {
   constructor(
     @FoobarJob.Inject()
-    private readonly foobarJobService: JobService<IFoobarJobData>,
+    private readonly foobarJobService: JobService<IFoobarJobData>
   ) {}
 
   async sendJob() {
