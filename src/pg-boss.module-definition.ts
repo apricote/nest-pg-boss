@@ -10,10 +10,7 @@ const {
   .setClassMethodName("forRoot")
   .build();
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-type ASYNC_OPTIONS_TYPE_WITH_NAME = typeof ASYNC_OPTIONS_TYPE & {
-  application_name: string;
-};
+type ASYNC_OPTIONS_TYPE_WITH_NAME = typeof ASYNC_OPTIONS_TYPE;
 
 export {
   ConfigurableModuleClass,
