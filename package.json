@@ -1,6 +1,6 @@
 {
   "name": "@loctax/nest-pg-boss",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Use pg-boss in your NestJS app",
   "author": "Julian Tölle <julian.toelle97@gmail.com>",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "peerDependencies": {
-    "@nestjs/common": "^9.3.3 || ^10.0.0",
-    "@nestjs/core": "^9.3.3 || ^10.0.0",
+    "@nestjs/common": "^9.3.3 || ^10.0.0 || ^11.0.0",
+    "@nestjs/core": "^9.3.3 || ^10.0.0 || ^11.0.0",
     "pg-boss": "^8.4.1 || ^9.0.0",
     "reflect-metadata": "^0.1.13 || ^0.2.0",
     "rxjs": "^7.8.1"
