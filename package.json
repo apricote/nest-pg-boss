@@ -37,7 +37,7 @@
     "@nestjs/platform-express": "10.4.19",
     "@nestjs/schematics": "10.2.3",
     "@nestjs/testing": "10.4.19",
-    "@types/jest": "29.5.14",
+    "@types/jest": "30.0.0",
     "@types/node": "22.15.32",
     "@types/supertest": "6.0.3",
     "@typescript-eslint/eslint-plugin": "7.18.0",
