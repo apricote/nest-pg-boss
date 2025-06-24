@@ -1,4 +1,4 @@
-import type { ConstructorOptions } from "pg-boss";
+import type { StopOptions, ConstructorOptions } from "pg-boss";
 
 // TODO: Figure at "name", "application_name", "instanceName"
 
@@ -31,4 +31,5 @@ export type PGBossModuleOptions = {
    */
   onError: (err: Error) => void;
   disableWorkers?: boolean;
+  stopOptions?: StopOptions
 } & ConstructorOptions;

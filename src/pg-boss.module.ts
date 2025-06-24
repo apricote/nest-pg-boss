@@ -29,8 +29,7 @@ import {
 })
 export class PGBossModule
   extends ConfigurableModuleClass
-  implements OnModuleInit, OnApplicationBootstrap, OnModuleDestroy
-{
+  implements OnModuleInit, OnApplicationBootstrap, OnModuleDestroy {
   private readonly logger = new Logger(this.constructor.name);
   private instance: PGBoss | undefined;
 
@@ -123,7 +122,7 @@ export class PGBossModule
   async onModuleDestroy(): Promise<void> {
     try {
       if (this.instance) {
-        await this.instance.stop();
+        await this.instance.stop(this.options.stopOptions);
       }
     } catch (e) {
       this.logger.error((e as Error).message);
