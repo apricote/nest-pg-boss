@@ -26,7 +26,7 @@
   "peerDependencies": {
     "@nestjs/common": "^9.3.3 || ^10.0.0",
     "@nestjs/core": "^9.3.3 || ^10.0.0",
-    "pg-boss": "^8.4.1 || ^9.0.0",
+    "pg-boss": "^8.4.1 || ^9.0.0 || ^10.0.0",
     "reflect-metadata": "^0.1.13 || ^0.2.0",
     "rxjs": "^7.2.0"
   },
@@ -46,7 +46,7 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
     "jest": "30.0.5",
-    "pg-boss": "9.0.3",
+    "pg-boss": "10.3.2",
     "prettier": "3.6.2",
     "rxjs": "7.8.2",
     "source-map-support": "0.5.21",
