@@ -24,19 +24,19 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "peerDependencies": {
-    "@nestjs/common": "^9.3.3 || ^10.0.0",
-    "@nestjs/core": "^9.3.3 || ^10.0.0",
+    "@nestjs/common": "^9.3.3 || ^10.0.0 || ^11.0.0",
+    "@nestjs/core": "^9.3.3 || ^10.0.0 || ^11.0.0",
     "pg-boss": "^8.4.1 || ^9.0.0",
     "reflect-metadata": "^0.1.13 || ^0.2.0",
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "10.4.9",
-    "@nestjs/common": "10.4.20",
-    "@nestjs/core": "10.4.20",
-    "@nestjs/platform-express": "10.4.20",
-    "@nestjs/schematics": "10.2.3",
-    "@nestjs/testing": "10.4.20",
+    "@nestjs/cli": "11.0.10",
+    "@nestjs/common": "11.1.6",
+    "@nestjs/core": "11.1.6",
+    "@nestjs/platform-express": "11.1.6",
+    "@nestjs/schematics": "11.0.7",
+    "@nestjs/testing": "11.1.6",
     "@types/jest": "30.0.0",
     "@types/node": "22.17.2",
     "@types/supertest": "6.0.3",
