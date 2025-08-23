@@ -11,6 +11,10 @@
     <a href="https://github.com/apricote/nest-pg-boss/actions?query=workflow%3A%22CI%22" target="_blank"><img src="https://img.shields.io/github/actions/workflow/status/apricote/nest-pg-boss/ci.yaml?branch=main" alt="CI Status"/></a>
 </p>
 
+# Archival Notice
+
+August 2025: I no longer use Nest.js personally, so I will no longer maintain this library. The most up-to-date fork is https://github.com/loc-tax/nest-pg-boss.
+
 ## Installation
 
 ```bash
